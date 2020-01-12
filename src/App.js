@@ -1,19 +1,49 @@
-import './App.css'
+import "./App.css";
+import Todo from "./Todo";
+import TodoForm from "./TodoForm";
 
-import React, {Component} from 'react'
+import React, { useState } from "react";
 
-class App extends Component {
-  render() {
-    return <div className="App">
-      <div className="App-heading App-flex">
-        <h2>Welcome to <span className="App-react">React</span></h2>
+function App() {
+  const [todos, setTodos] = useState([
+    { text: "Go to gym", isCompleted: false },
+    { text: "learn to code", isCompleted: false },
+    { text: "finish this project", isCompleted: false }
+  ]);
+
+  const addTodo = text => {
+    const newTodos = [...todos, { text }];
+    setTodos(newTodos);
+  };
+
+  const completeTodo = index => {
+    const newTodos = [...todos];
+    newTodos[index].isCompleted = true;
+    setTodos(newTodos);
+  };
+
+  const removeTodo = index => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
+
+  return (
+    <div className="app">
+      <div className="card-content">
+        {todos.map((todo, index) => (
+          <Todo
+            key={index}
+            index={index}
+            todo={todo}
+            completeTodo={completeTodo}
+            removeTodo={removeTodo}
+          />
+        ))}
       </div>
-      <div className="App-instructions App-flex">
-        <img className="App-logo" src={require('./react.svg')}/>
-        <p>Edit <code>src/App.js</code> and save to hot reload your changes.</p>
-      </div>
+      <TodoForm addTodo={addTodo} />
     </div>
-  }
+  );
 }
 
-export default App
+export default App;
